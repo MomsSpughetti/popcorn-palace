@@ -46,6 +46,8 @@ export class ShowtimesService {
     if (!showtime) {
       throw new NotFoundException(`Showtime with id ${id} not found.`);
     }
+
+    return showtime;
   }
 
   async update(id: number, updateShowtimeDto: Prisma.ShowtimeUpdateInput) {

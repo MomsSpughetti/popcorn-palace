@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ShowtimesService } from './showtimes.service';
 import { DatabaseService } from '../database/database.service';
 import { Prisma } from '@prisma/client';
-import { BadRequestException } from '@nestjs/common';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 
 describe('ShowtimesService', () => {
   let service: ShowtimesService;
@@ -53,7 +53,7 @@ describe('ShowtimesService', () => {
     expect(databaseService.showtime.create).toHaveBeenCalledWith({ data: createShowtimeDto });
   });
 
-  it('should throw BadRequestException if overlap exists', async () => {
+  it('should throw ConflictException if overlap exists', async () => {
     const createShowtimeDto: Prisma.ShowtimeCreateInput = {
       movie: { connect: { id: 1 } },
       theater: 'Theater A',
@@ -64,7 +64,7 @@ describe('ShowtimesService', () => {
 
     databaseService.showtime.findFirst.mockResolvedValue({ id: 1 }); // Simulate overlap
 
-    await expect(service.create(createShowtimeDto)).rejects.toThrow(BadRequestException);
+    await expect(service.create(createShowtimeDto)).rejects.toThrow(ConflictException);
     expect(databaseService.showtime.create).not.toHaveBeenCalled();
   });
 
@@ -95,7 +95,7 @@ describe('ShowtimesService', () => {
     expect(databaseService.showtime.update).toHaveBeenCalledWith({ where: { id }, data: updateShowtimeDto });
   });
 
-  it('should throw BadRequestException if update overlap exists', async () => {
+  it('should throw ConflictException if update overlap exists', async () => {
     const id = 1;
     const updateShowtimeDto: Prisma.ShowtimeUpdateInput = {
       movie: { connect: { id: 2 } },
@@ -108,7 +108,7 @@ describe('ShowtimesService', () => {
     databaseService.showtime.findUnique.mockResolvedValue({ id, movie: { id: 1 }, theater: 'Theater A', startTime: new Date(), endTime: new Date() });
     databaseService.showtime.findFirst.mockResolvedValue({ id: 2 }); // Simulate overlap
 
-    await expect(service.update(id, updateShowtimeDto)).rejects.toThrow(BadRequestException);
+    await expect(service.update(id, updateShowtimeDto)).rejects.toThrow(ConflictException);
     expect(databaseService.showtime.update).not.toHaveBeenCalled();
   });
 
@@ -118,7 +118,7 @@ describe('ShowtimesService', () => {
     expect(databaseService.showtime.delete).toHaveBeenCalledWith({ where: { id } });
   });
 
-  it('should throw BadRequestException if showtime to update does not exist', async () => {
+  it('should throw NotFoundException if showtime to update does not exist', async () => {
     const id = 1;
     const updateShowtimeDto: Prisma.ShowtimeUpdateInput = {
       movie: { connect: { id: 2 } },
@@ -130,7 +130,7 @@ describe('ShowtimesService', () => {
 
     databaseService.showtime.findUnique.mockResolvedValue(null);
 
-    await expect(service.update(id, updateShowtimeDto)).rejects.toThrow(BadRequestException);
+    await expect(service.update(id, updateShowtimeDto)).rejects.toThrow(NotFoundException);
     expect(databaseService.showtime.update).not.toHaveBeenCalled();
 
   });
