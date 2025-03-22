@@ -26,9 +26,10 @@ This is a NestJS application that provides a backend API for a movie ticket book
 3.  **Start the PostgreSQL Database (Using Docker):**
 
     This application uses Docker Compose to manage the PostgreSQL database.
+    - use the following link to install docker compose https://docs.docker.com/compose/install/.
 
     ```bash
-    docker-compose up -d
+    docker compose up -d
     ```
 
     This command will start a PostgreSQL container.
