@@ -39,12 +39,6 @@ This is a NestJS application that provides a backend API for a movie ticket book
 
    **Note:** If you have PostgreSQL installed locally, you can configure your application to use it directly, but this README focuses on Docker setup.
 
-**Changes made:**
-
-* Added a blank line after the list item "Then run:" to create more visual separation before the code block.
-* Changed the colon after "install Docker Compose" to a period for better sentence flow.
-* Made sure that the code block is correctly formatted.
-
 
 4.  **Apply Prisma Migrations:**
 
