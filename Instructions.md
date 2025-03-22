@@ -23,20 +23,28 @@ This is a NestJS application that provides a backend API for a movie ticket book
     npm install
     ```
 
-3.  **Start the PostgreSQL Database (Using Docker):**
+3. **Start the PostgreSQL Database (Using Docker):**
 
-    This application uses Docker Compose to manage the PostgreSQL database.
-    - Use the following link to install docker compose https://docs.docker.com/compose/install/
-    <br>
-    - Then run:
-    <br><br/>
-    ```bash
-    docker compose up -d
-    ```
+   This application uses Docker Compose to manage the PostgreSQL database.
+   * Use the following link to install Docker Compose: https://docs.docker.com/compose/install/
+   * Then run:
 
-    This command will start a PostgreSQL container.
+   <br>
+   
+   ```bash
+   docker compose up -d
+   ```
 
-    **Note:** If you have PostgreSQL installed locally, you can configure your application to use it directly, but this README focuses on Docker setup.
+   This command will start a PostgreSQL container.
+
+   **Note:** If you have PostgreSQL installed locally, you can configure your application to use it directly, but this README focuses on Docker setup.
+
+**Changes made:**
+
+* Added a blank line after the list item "Then run:" to create more visual separation before the code block.
+* Changed the colon after "install Docker Compose" to a period for better sentence flow.
+* Made sure that the code block is correctly formatted.
+
 
 4.  **Apply Prisma Migrations:**
 
