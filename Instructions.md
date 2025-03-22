@@ -13,7 +13,7 @@ This is a NestJS application that provides a backend API for a movie ticket book
 1.  **Clone the Repository:**
 
     ```bash
-    git clone [https://github.com/yourusername/popcorn-palace.git](https://github.com/yourusername/popcorn-palace.git)
+    git clone https://github.com/MomsSpughetti/popcorn-palace.git
     cd popcorn-palace
     ```
 
