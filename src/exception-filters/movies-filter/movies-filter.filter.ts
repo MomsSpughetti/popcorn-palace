@@ -1,12 +1,27 @@
-import { ArgumentsHost, Catch, HttpStatus } from '@nestjs/common';
+import { ArgumentsHost, Catch, HttpStatus, BadRequestException } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { Prisma } from '@prisma/client';
 import { Response } from 'express';
 
+@Catch(BadRequestException)
+export class MoviesCustomExceptionFilter extends BaseExceptionFilter {
+  catch(exception: BadRequestException, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+
+    const response = ctx.getResponse<Response>();
+    const status = HttpStatus.BAD_REQUEST;
+    const message = exception.message;
+
+    response.status(status).json({
+      statusCode: status,
+      message: message,
+    });
+  }
+}
+
 @Catch(Prisma.PrismaClientKnownRequestError)
 export class MoviesExceptionFilter extends BaseExceptionFilter {
   catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost) {
-    console.error(exception.message);
     const ctx = host.switchToHttp();
 
     const response = ctx.getResponse<Response>();

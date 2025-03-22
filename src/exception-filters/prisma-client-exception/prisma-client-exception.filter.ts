@@ -7,7 +7,6 @@ import { Response } from 'express';
 @Catch(Prisma.PrismaClientValidationError)
 export class InputValidationFilter extends BaseExceptionFilter {
   catch(exception: Prisma.PrismaClientValidationError, host: ArgumentsHost) {
-    console.error(exception.message);
     const ctx = host.switchToHttp();
 
     const response = ctx.getResponse<Response>();

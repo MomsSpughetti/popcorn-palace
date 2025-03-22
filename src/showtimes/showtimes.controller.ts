@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseFilters } from '@nestjs/common';
 import { ShowtimesService } from './showtimes.service';
 import { Prisma } from '@prisma/client';
-import { ShowtimesExceptionFilter } from 'src/exception-filters/showtimes-filter/showtimes-filter.filter';
+import { ShowtimesExceptionFilter } from '../exception-filters/showtimes-filter/showtimes-filter.filter';
 
 @Controller('showtimes')
 @UseFilters(ShowtimesExceptionFilter)

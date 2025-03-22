@@ -1,6 +1,6 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException, ConflictException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { DatabaseService } from 'src/database/database.service';
+import { DatabaseService } from '../database/database.service';
 
 @Injectable()
 export class ShowtimesService {
@@ -9,6 +9,11 @@ export class ShowtimesService {
   async create(createShowtimeDto: Prisma.ShowtimeCreateInput) {
 
     const { theater, startTime, endTime } = createShowtimeDto;
+    // check if theater is empty
+    if (!theater || theater.trim() === '') {
+      throw new BadRequestException('Theater value cannot be empty.');
+    }
+    
 
     const overlappingShowtime = await this.databaseService.showtime.findFirst({
       where: {
@@ -25,7 +30,7 @@ export class ShowtimesService {
     });
 
     if (overlappingShowtime) {
-      throw new BadRequestException('There is already a showtime in this theater at this time.');
+      throw new ConflictException('There is already a showtime in this theater at this time.');
     }
 
     return await this.databaseService.showtime.create({
@@ -34,9 +39,13 @@ export class ShowtimesService {
   }
 
   async findOne(id: number) {
-    return await this.databaseService.showtime.findUnique({
+    const showtime =  await this.databaseService.showtime.findUnique({
       where: { id },
     });
+    
+    if (!showtime) {
+      throw new NotFoundException(`Showtime with id ${id} not found.`);
+    }
   }
 
   async update(id: number, updateShowtimeDto: Prisma.ShowtimeUpdateInput) {
@@ -47,7 +56,7 @@ export class ShowtimesService {
     });
   
     if (!currentShowtime) {
-      throw new BadRequestException(`Showtime with id ${id} not found.`);
+      throw new NotFoundException(`Showtime with id ${id} not found.`);
     }
   
     const checkStartTime = startTime ? (startTime as Date) : currentShowtime.startTime;
@@ -70,7 +79,7 @@ export class ShowtimesService {
     });
   
     if (overlappingShowtime) {
-      throw new BadRequestException('There is already a showtime in this theater at this time.');
+      throw new ConflictException('There is already a showtime in this theater at this time.');
     }
   
     await this.databaseService.showtime.update({

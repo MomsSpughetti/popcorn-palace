@@ -1,12 +1,18 @@
-import { Injectable, NotFoundException, InternalServerErrorException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { DatabaseService } from 'src/database/database.service';
+import { DatabaseService } from '../database/database.service';
 
 @Injectable()
 export class MoviesService {
   constructor(private readonly databaseService: DatabaseService) {}
 
   async create(createMovieDto: Prisma.MovieCreateInput) {
+
+    // check if title is empty
+    if (!createMovieDto.title || createMovieDto.title.trim() === '') {
+      throw new BadRequestException('Movie title value cannot be empty.');
+    }
+    
     return await this.databaseService.movie.create({
       data: createMovieDto,
     });

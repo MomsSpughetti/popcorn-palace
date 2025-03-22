@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseFilters } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
 import { Prisma } from '@prisma/client';
-import { BookingsExceptionFilter } from 'src/exception-filters/bookings-filter/bookings-filter.filter';
+import { BookingsExceptionFilter } from '../exception-filters/bookings-filter/bookings-filter.filter';
 
 @Controller('bookings')
 @UseFilters(BookingsExceptionFilter)
